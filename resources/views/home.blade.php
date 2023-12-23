@@ -8,6 +8,15 @@
         <link rel="stylesheet" href="{{ asset('css/list.css') }}">
     </head>
 
+    @if(session('success'))
+        <div class="alert alert-info" role="alert">
+            <button type="button" class="close btn btn-default" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="users-table">
 
         <div class="container">
@@ -90,17 +99,36 @@
     {{-- Add Modal --}}
 
     @include('partials.modal', [
-        'modalTitle' => 'Add User',
-        'modalId'    => 'addModal',
-        'modalBody'  => ''
+        'modalTitle'  => 'Add User',
+        'modalId'     => 'addModal',
+        'formAction'  => '/',
+        'formMethod'  => 'post',
+        'modalInputs' => [
+            [
+                'type'  => 'text',
+                'label' => 'Name',
+                'name'  => 'form_name',
+                'placeholder' => 'Enter name'
+            ],
+            [
+                'type'  => 'email',
+                'label' => 'Email',
+                'name'  => 'form_email',
+                'placeholder' => 'Enter email'
+            ]
+        ]
     ])
 
     {{-- Filter Modal --}}
 
     @include('partials.modal', [
-        'modalTitle' => 'Filter Users',
-        'modalId'    => 'filterModal',
-        'modalBody'  => ''
+        'modalTitle'  => 'Filter Users',
+        'modalId'     => 'filterModal',
+        'formAction'  => '/',
+        'formMethod'  => 'get',
+        'modalInputs' => [
+
+        ]
     ])
 
 @endsection
