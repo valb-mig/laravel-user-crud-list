@@ -3,13 +3,16 @@
 
 @section('content')
 
+    {{-- Scripts --}}
+    <script src="{{ asset('js/edit.js') }}"></script>
+
     <head>
         {{-- Style --}}
         <link rel="stylesheet" href="{{ asset('css/list.css') }}">
     </head>
 
     @if(session('success'))
-        <div class="alert alert-info" role="alert">
+        <div class="alert alert-info position-absolute fixed-top" role="alert">
             <button type="button" class="close btn btn-default" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -23,7 +26,7 @@
 
             <div class="button-list d-flex gap-2">
                 <a 
-                    href="#" 
+                    href="/#" 
                     class="btn btn-success d-flex align-items-center justify-content-center gap-1" 
                     data-toggle="modal"
                     data-target="#addModal"
@@ -31,7 +34,7 @@
                     <i class="fa fa-plus"></i>Add
                 </a>
                 <a 
-                    href="#" 
+                    href="/#" 
                     class="btn btn-primary d-flex align-items-center justify-content-center gap-1" 
                     data-toggle="modal"
                     data-target="#filterModal"
@@ -61,12 +64,18 @@
                                 <td>{{$user->updated_at}}</td>
 
                                 <td class="text-center">
-                                    <button class="btn btn-primary">
+                                    <a 
+                                        class="edit-user btn btn-primary" 
+                                        href="/#" 
+                                        data-toggle="modal" 
+                                        data-target="#editModal" 
+                                        data-user-id="{{ $user->user_id }}"
+                                    >
                                         <i class="fa fa-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-danger">
+                                    </a>
+                                    <a class="btn btn-danger" href="/remove/{{$user->user_id}}">
                                         <i class="fa fa-close"></i>
-                                    </button>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -95,6 +104,31 @@
         </nav>
     
     </div>
+
+    {{-- Edit Modal --}}
+
+    @include('partials.modal', [
+        'modalTitle'  => 'Edit User',
+        'modalId'     => 'editModal',
+        'formAction'  => '#',
+        'formMethod'  => 'post',
+        'modalInputs' => [
+            [
+                'id'    => 'edit-form-name',
+                'type'  => 'text',
+                'label' => 'Name',
+                'name'  => 'form_name',
+                'placeholder' => 'Enter name',
+            ],
+            [
+                'id'    => 'edit-form-email',
+                'type'  => 'email',
+                'label' => 'Email',
+                'name'  => 'form_email',
+                'placeholder' => 'Enter email',
+            ]
+        ]
+    ])
 
     {{-- Add Modal --}}
 

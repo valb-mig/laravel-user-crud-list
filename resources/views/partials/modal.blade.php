@@ -1,4 +1,4 @@
-<form action="{{$formAction}}" method="{{$formMethod}}" enctype="multipart/form-data">
+<form  id="form-{{$modalId}}" action="{{$formAction}}" method="{{$formMethod}}" enctype="multipart/form-data">
     @csrf
     <div class="modal fade text-left" id={{$modalId}} tabindex="-1">
         <div class="modal-dialog modal-lg" role="document">
@@ -9,7 +9,7 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group gap-2 d-flex flex-column">
                     @foreach ($modalInputs as $input)
 
                         @if (isset($input['label']) && !empty($input['label']))
@@ -19,9 +19,28 @@
                         @endif
 
                         @if ($input['type'] != 'select')
-                            <input type="{{$input['type']}}" placeholder="{{$input['placeholder']}}" name="{{$input['name']}}" class="form-control" required/>
+                            <input 
+                                
+                                @if (isset($input['id']) && !empty($input['id']))
+                                    id="{{$input['id']}}"
+                                @endif
+
+                                type="{{$input['type']}}" 
+                                placeholder="{{$input['placeholder']}}" 
+                                name="{{$input['name']}}" 
+                                class="form-control" 
+                                required
+                                
+                                @if (isset($input['value']) && !empty($input['value']))
+                                    value="{{$input['value']}}"
+                                @endif
+                            />
                         @else
-                            <select placeholder="{{$input['placeholder']}}" name="{{$input['name']}}" class="form-control">
+                            <select 
+                                placeholder="{{$input['placeholder']}}" 
+                                name="{{$input['name']}}" 
+                                class="form-control"
+                            >
                                 {{-- [TODO] --}}
                             </select>
                         @endif
