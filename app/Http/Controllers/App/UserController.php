@@ -22,9 +22,9 @@ class UserController extends Controller
         ];
 
         $messages = [
-            'form_name.required'  => 'O campo nome é obrigatório.',
-            'form_email.required' => 'O campo e-mail é obrigatório.',
-            'form_email.email'    => 'Por favor, insira um endereço de e-mail válido.',
+            'form_name.required'  => '',
+            'form_email.required' => '',
+            'form_email.email'    => '',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -35,11 +35,11 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        $nome  = $request->input('form_name');
+        $name  = $request->input('form_name');
         $email = $request->input('form_email');
 
         $user = new User();
-        $user->user_name  = $nome;
+        $user->user_name  = $name;
         $user->user_email = $email;
         $user->created_at = now();
         $user->updated_at = now();
@@ -69,9 +69,9 @@ class UserController extends Controller
         ];
 
         $messages = [
-            'form_name.required'  => 'O campo nome é obrigatório.',
-            'form_email.required' => 'O campo e-mail é obrigatório.',
-            'form_email.email'    => 'Por favor, insira um endereço de e-mail válido.',
+            'form_name.required'  => '',
+            'form_email.required' => '',
+            'form_email.email'    => '',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
