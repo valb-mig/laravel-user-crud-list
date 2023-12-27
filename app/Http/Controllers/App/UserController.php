@@ -11,7 +11,9 @@ class UserController extends Controller
 {
     public function index() 
     {
-        return view('home')->with(['users' => User::all()]);
+        $users = User::paginate(5);
+
+        return view('home', ['users' => $users]);
     }
 
     public function addUser(Request $request) 

@@ -24,7 +24,7 @@
 
         <div class="container">
 
-            <div class="button-list d-flex gap-2">
+            <div class="button-list d-flex gap-2 justify-content-between">
                 <a 
                     href="/#" 
                     class="btn btn-success d-flex align-items-center justify-content-center gap-1" 
@@ -33,14 +33,9 @@
                 >
                     <i class="fa fa-plus"></i>Add
                 </a>
-                <a 
-                    href="/#" 
-                    class="btn btn-primary d-flex align-items-center justify-content-center gap-1" 
-                    data-toggle="modal"
-                    data-target="#filterModal"
-                >
-                    <i class="fa fa-filter"></i>Filter
-                </a>
+                <form action="/#" method="post">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search">                
+                </form>
             </div>
 
             <div class="row m-0 mt-5">
@@ -56,53 +51,48 @@
                     </thead>
                     <tbody>
 
-                        @foreach ($users as $user)
-                            <tr>
-                                <th scope="row">{{$user->user_name}}</th>
-                                <td>{{$user->user_email}}</td>
-                                <td>{{$user->created_at}}</td>
-                                <td>{{$user->updated_at}}</td>
+                        @if(count($users) > 0)
 
-                                <td class="text-center">
-                                    <a 
-                                        class="edit-user btn btn-primary" 
-                                        href="/#" 
-                                        data-toggle="modal" 
-                                        data-target="#editModal" 
-                                        data-user-id="{{ $user->user_id }}"
-                                    >
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                    <a class="btn btn-danger" href="/remove/{{$user->user_id}}">
-                                        <i class="fa fa-close"></i>
-                                    </a>
+                            @foreach ($users as $user)
+                                <tr>
+                                    <th scope="row">{{$user->user_name}}</th>
+                                    <td>{{$user->user_email}}</td>
+                                    <td>{{$user->created_at}}</td>
+                                    <td>{{$user->updated_at}}</td>
+
+                                    <td class="text-center">
+                                        <a 
+                                            class="edit-user btn btn-primary" 
+                                            href="/#" 
+                                            data-toggle="modal" 
+                                            data-target="#editModal" 
+                                            data-user-id="{{ $user->user_id }}"
+                                        >
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        <a class="btn btn-danger" href="/remove/{{$user->user_id}}">
+                                            <i class="fa fa-close"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                        @else
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    No users found! :/
                                 </td>
                             </tr>
-                        @endforeach
+                        @endif
 
                     </tbody>
                 </table>
             </div>
         </div>
+    </div>
 
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            </ul>
-        </nav>
-    
+    <div class="container mt-4">
+        {{ $users->links('partials.paginator') }}
     </div>
 
     {{-- Edit Modal --}}
@@ -150,18 +140,6 @@
                 'name'  => 'form_email',
                 'placeholder' => 'Enter email'
             ]
-        ]
-    ])
-
-    {{-- Filter Modal --}}
-
-    @include('partials.modal', [
-        'modalTitle'  => 'Filter Users',
-        'modalId'     => 'filterModal',
-        'formAction'  => '/',
-        'formMethod'  => 'get',
-        'modalInputs' => [
-
         ]
     ])
 

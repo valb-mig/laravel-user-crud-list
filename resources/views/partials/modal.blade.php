@@ -1,4 +1,4 @@
-<form  id="form-{{$modalId}}" action="{{$formAction}}" method="{{$formMethod}}" enctype="multipart/form-data">
+<form id="form-{{$modalId}}" action="{{$formAction}}" method="{{$formMethod}}" enctype="multipart/form-data">
     @csrf
     <div class="modal fade text-left" id={{$modalId}} tabindex="-1">
         <div class="modal-dialog modal-lg" role="document">
