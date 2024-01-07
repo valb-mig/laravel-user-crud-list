@@ -2,15 +2,15 @@ $(document).ready(function () {
 
     $('.edit-user').on('click', function () {
 
-        let userID = $(this).data('user-id');
+        let userId = $(this).data('user-id');
 
         $('#edit-form-name').val("");
         $('#edit-form-email').val("");
 
-        $('#form-editModal').attr('action', `/edit/${userID}`)
+        $('#form-editModal').attr('action', `/user/edit/${userId}`)
 
         $.ajax({
-            url: '/edit/' + userID,
+            url:  `/user/get/${userId}`,
             type: 'GET',
             dataType: 'json',
             success: (userData) => {
@@ -18,7 +18,7 @@ $(document).ready(function () {
                 $('#edit-form-email').val(userData.user_email);
             },
             error: function (xhr, status, error) {
-                console.error('Erro ao obter dados do usuário. Código de status:', xhr.status);
+                console.error(status, xhr.status, error);
             }
         });
     });
