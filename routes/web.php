@@ -3,10 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\App\UserController;
 
-Route::get('/',  [UserController::class, 'index']);
-Route::post('/', [UserController::class, 'addUser']);
+Route::get('/{search?}',[
+    UserController::class, 'index'
+]);
 
-Route::get('/edit/{id}',   [UserController::class, 'getUserInfo']);
-Route::post('/edit/{id}',  [UserController::class, 'editUser']);
+Route::post('/user/add',[
+    UserController::class, 'add'
+]);
 
-Route::get('/remove/{id}', [UserController::class, 'removeUser']);
+Route::get('/user/get/{id}',[
+    UserController::class, 'get'
+]);
+
+Route::post('/user/edit/{id}',[
+    UserController::class, 'edit'
+]);
+
+Route::get('/user/delete/{id}',[
+    UserController::class, 'delete'
+]);

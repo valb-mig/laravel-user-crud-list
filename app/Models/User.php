@@ -9,4 +9,6 @@ class User extends Model
     protected $table      = 'sys_users';
     protected $primaryKey = 'user_id';
     public    $timestamps = true;
+
+    protected $fillable = ['user_name', 'user_email'];
 }

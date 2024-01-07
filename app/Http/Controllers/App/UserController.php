@@ -5,52 +5,44 @@ namespace App\Http\Controllers\App;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function index() 
+    public function index($search = null) 
     {
-        $users = User::paginate(5);
+        $users = null;
+
+        if (!is_null($search)) 
+        {
+            $users = User::where('user_name', 'like', "%$search%")->paginate(5);
+        } 
+        else 
+        {
+            $users = User::paginate(5);
+        }
 
         return view('home', ['users' => $users]);
     }
 
-    public function addUser(Request $request) 
+    public function add(Request $request) 
     {
-        $rules = [
-            'form_name' => 'required|string',
-            'form_email' => 'required|email',
-        ];
-
-        $messages = [
-            'form_name.required'  => '',
-            'form_email.required' => '',
-            'form_email.email'    => '',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-            return redirect('/')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         $name  = $request->input('form_name');
         $email = $request->input('form_email');
 
-        $user = new User();
-        $user->user_name  = $name;
-        $user->user_email = $email;
-        $user->created_at = now();
-        $user->updated_at = now();
-        $user->save();
+        User::create([
+            'user_name'  => $name,
+            'user_email' => $email
+        ]);
 
-        return redirect('/')->with('success', 'User created!')->withInput();
+        return redirect('/')->with([
+            'alert' => [
+                'text' => 'User created!',
+                'type' => 'success'
+            ]
+        ])->withInput();
     }
 
-    public function removeUser($id) 
+    public function delete($id) 
     {
         $user = User::find($id);
 
@@ -60,30 +52,16 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect('/')->with('success', 'User removed!')->withInput();
+        return redirect('/')->with([
+            'alert' => [
+                'text' => 'User deleted!',
+                'type' => 'danger'
+            ]
+        ])->withInput();
     }
 
-    public function editUser($id, Request $request) 
+    public function edit($id, Request $request) 
     {
-        $rules = [
-            'form_name' => 'required|string',
-            'form_email' => 'required|email',
-        ];
-
-        $messages = [
-            'form_name.required'  => '',
-            'form_email.required' => '',
-            'form_email.email'    => '',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-            return redirect('/')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         $user = User::find($id);
 
         if (!$user) {
@@ -97,10 +75,15 @@ class UserController extends Controller
         $user->user_email = $email;
         $user->save();
  
-        return redirect('/')->with('success', 'User updated!')->withInput();
+        return redirect('/')->with([
+            'alert' => [
+                'text' => 'User updated!',
+                'type' => 'info'
+            ]
+        ])->withInput();   
     }
 
-    public function getUserInfo($id) 
+    public function get($id) 
     {
         $user = User::find($id);
 
@@ -110,7 +93,7 @@ class UserController extends Controller
                 'user_email' => $user->user_email
             ]);
         } else {
-            return response()->json(['error' => 'Usuário não encontrado'], 404);
+            return response()->json(['error' => 'user not found'], 404);
         }
     }
 }
